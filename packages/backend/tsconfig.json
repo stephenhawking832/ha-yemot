@@ -6,7 +6,10 @@
     "composite": true,
     "baseUrl": ".",
     "paths": {
-      "@ha-yemot/shared": ["../shared/src/index.ts"]
+      "@ha-yemot/shared": ["../shared/src/index.ts"],
+      "home-assistant-js-websocket": [
+        "./node_modules/home-assistant-js-websocket/dist/index.d.ts"
+      ]
     }
   },
   "references": [
