@@ -63,7 +63,6 @@ export class HomeAssistantService {
       this.isConnecting = false;
       logger.info('✅ Successfully connected to Home Assistant WebSocket API!');
 
-      this.registerConnectionEvents();
       
       this.registerConnectionEvents();
       await this.initializeStateCache();
