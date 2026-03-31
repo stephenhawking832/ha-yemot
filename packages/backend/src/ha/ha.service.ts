@@ -6,10 +6,13 @@ import {
   Connection,
   ERR_CANNOT_CONNECT,
   ERR_INVALID_AUTH,
+  subscribeEntities,
+  type HassEntities,
 } from 'home-assistant-js-websocket';
 import WebSocket from 'ws';
 import { logger } from '../utils/logger';
 import { configManager } from '../config/config.service';
+import type { RichEntity } from '@ha-yemot/shared';
 
 // Node.js doesn't have a native global WebSocket object like browsers do.
 // We must map it globally for the HA library to use.
@@ -19,6 +22,9 @@ export class HomeAssistantService {
   private static instance: HomeAssistantService;
   private connection: Connection | null = null;
   private isConnecting = false;
+  private entities: HassEntities = {};
+  private entityRegistry: any[] = [];
+  private areaRegistry: any[] = [];
 
   private constructor() {}
 
@@ -59,7 +65,8 @@ export class HomeAssistantService {
 
       this.registerConnectionEvents();
       
-      // TODO: (Piece 3) We will call this.initializeStateCache() here later!
+      this.registerConnectionEvents();
+      await this.initializeStateCache();
 
     } catch (err) {
       this.isConnecting = false;
@@ -102,6 +109,74 @@ export class HomeAssistantService {
    */
   public getConnection(): Connection | null {
     return this.connection;
+  }
+
+   /**
+   * Subscribes to live state changes and fetches the static registries for the GUI.
+   */
+  private async initializeStateCache(): Promise<void> {
+    if (!this.connection) return;
+
+    try {
+      // 1. Subscribe to live state updates (this callback runs every time a light turns on/off)
+      subscribeEntities(this.connection, (entities) => {
+        this.entities = entities;
+      });
+
+      // 2. Fetch the Entity Registry (tells us which Area ID an entity belongs to)
+      this.entityRegistry = await this.connection.sendMessagePromise({
+        type: 'config/entity_registry/list',
+      });
+
+      // 3. Fetch the Area Registry (translates Area ID to "Living Room")
+      this.areaRegistry = await this.connection.sendMessagePromise({
+        type: 'config/area_registry/list',
+      });
+
+      logger.info('📦 Home Assistant state cache and registries initialized.');
+    } catch (err) {
+      logger.error({ err }, 'Failed to initialize HA state cache or registries.');
+    }
+  }
+
+  /**
+   * Retrieves a rich array of all entities, merged with their Area and Friendly Name.
+   * This will be used by the Express API to serve the Vue GUI dropdowns.
+   */
+  public getRichEntities(): RichEntity[] {
+    const richEntities: RichEntity[] = [];
+
+    // Create a quick lookup map for Areas
+    const areaMap = new Map(this.areaRegistry.map((a) => [a.area_id, a.name]));
+
+    // Create a quick lookup map for Entity Registries
+    const entityRegMap = new Map(this.entityRegistry.map((e) => [e.entity_id, e]));
+
+    // Merge live state with registry data
+    for (const [entity_id, stateObj] of Object.entries(this.entities)) {
+      const regObj = entityRegMap.get(entity_id);
+      const area_id = regObj?.area_id || null;
+      const area_name = area_id ? areaMap.get(area_id) || null : null;
+
+      richEntities.push({
+        entity_id,
+        state: stateObj.state,
+        friendly_name: stateObj.attributes.friendly_name || entity_id,
+        domain: entity_id.split('.')[0],
+        area_id,
+        area_name,
+      });
+    }
+
+    return richEntities;
+  }
+
+  /**
+   * Instantly gets the live state of a single entity.
+   * This is used by the IVR `ReadNode` during a phone call.
+   */
+  public getEntityState(entityId: string) {
+    return this.entities[entityId] || null;
   }
 }
 
