@@ -92,3 +92,18 @@ export interface IVRSystemConfig {
   nodes: Record<string, IVRNode>; // Flat dictionary of nodes
   rootNodeId: string;   // Where the call starts
 }
+
+
+
+// ==========================================
+// 6. HOME ASSISTANT CACHE TYPES (For Vue GUI)
+// ==========================================
+
+export interface RichEntity {
+  entity_id: string;
+  state: string;
+  friendly_name: string;
+  domain: string;
+  area_id: string | null;
+  area_name: string | null;
+}
