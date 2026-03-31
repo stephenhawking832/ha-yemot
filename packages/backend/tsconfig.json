@@ -2,7 +2,15 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "composite": true,
+    "baseUrl": ".",
+    "paths": {
+      "@ha-yemot/shared": ["../shared/src/index.ts"]
+    }
   },
+  "references": [
+    { "path": "../shared" } 
+  ],
   "include": ["src/**/*"]
 }
