@@ -5,7 +5,10 @@ import bcrypt from 'bcryptjs';
 import * as jsonwebtoken from 'jsonwebtoken';
 import { z } from 'zod';
 import { logger } from '../utils/logger';
-
+if (process.env.NODE_ENV !== 'production') {
+  // Use a dynamic import or require so it doesn't break if the package is missing
+  import('dotenv').then((dotenv) => dotenv.config());
+}
 // 1. Zod Schema for the auth.json file
 const AuthFileSchema = z.object({
   username: z.string(),
