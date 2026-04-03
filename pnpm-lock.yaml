@@ -41,6 +41,9 @@ importers:
       '@ha-yemot/shared':
         specifier: workspace:*
         version: link:../shared
+      '@tsoa/runtime':
+        specifier: 7.0.0-alpha.0
+        version: 7.0.0-alpha.0
       bcryptjs:
         specifier: ^3.0.3
         version: 3.0.3
@@ -2309,7 +2312,7 @@ snapshots:
   '@hapi/mimos@7.0.1':
     dependencies:
       '@hapi/hoek': 11.0.7
-      mime-db: 1.52.0
+      mime-db: 1.54.0
 
   '@hapi/nigel@5.0.1':
     dependencies:
