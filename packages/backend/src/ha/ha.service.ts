@@ -7,6 +7,7 @@ import {
   ERR_CANNOT_CONNECT,
   ERR_INVALID_AUTH,
   subscribeEntities,
+  callService,
   type HassEntities,
 } from 'home-assistant-js-websocket';
 import WebSocket from 'ws';
@@ -176,6 +177,46 @@ export class HomeAssistantService {
    */
   public getEntityState(entityId: string) {
     return this.entities[entityId] || null;
+  }
+
+  /**
+   * Executes a Home Assistant Service call instantly via WebSocket.
+   * Used by the IVR `ActionNode`.
+   * 
+   * @param domain The HA domain (e.g., 'climate', 'light')
+   * @param service The action to perform (e.g., 'turn_on', 'set_temperature')
+   * @param target Array of entity_ids to target
+   * @param payload Optional templated data payload
+   */
+  public async executeAction(
+    domain: string,
+    service: string,
+    target: string[],
+    payload: Record<string, any> = {}
+  ): Promise<void> {
+    if (!this.connection) {
+      throw new Error('Cannot execute action: Not connected to Home Assistant');
+    }
+
+    try {
+      logger.info(
+        { domain, service, target, payload },
+        'Executing Home Assistant Service Call'
+      );
+
+      // We use await to ensure the command was received by HA without error
+      await callService(this.connection, domain, service, payload, {
+        entity_id: target,
+      });
+      
+      logger.info('✅ Service Call executed successfully.');
+    } catch (err) {
+      logger.error(
+        { err, domain, service, target },
+        'Failed to execute Home Assistant Service Call'
+      );
+      throw err; // Throw it so the IVR engine can catch it and play the `failTts` message
+    }
   }
 }
 
