@@ -4,7 +4,6 @@
     "outDir": "./dist",
     "rootDir": "./src",
     "composite": true,
-    "baseUrl": ".",
     "paths": {
       "@ha-yemot/shared": ["../shared/src/index.ts"],
       "home-assistant-js-websocket": [
