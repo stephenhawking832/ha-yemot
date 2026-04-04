@@ -11,7 +11,8 @@ export interface BaseNode {
 
 export interface GatheringNode extends BaseNode {
   ttsPrompt: string;   
-  valName: string;     // The key Yemot uses AND our parsed state object uses
+  valName: string;     // The key Yemot uses
+  variableName: string;    // the key the state objcet uses
 }
 
 // ==========================================
