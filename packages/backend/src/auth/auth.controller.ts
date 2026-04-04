@@ -1,5 +1,5 @@
 // packages/backend/src/auth/auth.controller.ts
-import { Controller, Post, Body, Route, Tags, SuccessResponse } from 'tsoa';
+import { Controller, Get, Post, Body, Route, Tags, SuccessResponse, Security } from 'tsoa';
 import { authManager } from './auth.service';
 
 // The exact JSON body the Vue frontend will send
@@ -10,6 +10,15 @@ export interface LoginRequest {
 
 export interface LoginResponse {
   token: string;
+}
+
+export interface ApiKeyResponse {
+  newApiKey: string;
+  warning: string;
+}
+
+export interface PhonesRequest {
+  phones: string[];
 }
 
 @Route('api/auth')
@@ -31,5 +40,41 @@ export class AuthController extends Controller {
 
     const token = authManager.generateToken();
     return { token };
+  }
+
+    /**
+   * Generates a new Yemot API Key. 
+   * WARNING: The old key will be instantly invalidated.
+   */
+  @Post('api-key')
+  @Security('jwt')
+  @SuccessResponse('200', 'New Key Generated')
+  public async generateApiKey(): Promise<ApiKeyResponse> {
+    const newApiKey = await authManager.generateNewApiKey();
+    return {
+      newApiKey,
+      warning: "Copy this key immediately. You will not be able to view it again.",
+    };
+  }
+
+  /**
+   * Gets the current allowed phones whitelist.
+   */
+  @Get('phones')
+  @Security('jwt')
+  public getPhones(): string[] {
+    return authManager.getAllowedPhones();
+  }
+
+  /**
+   * Updates the allowed phones whitelist.
+   * Send an empty array to allow ALL phones.
+   */
+  @Post('phones')
+  @Security('jwt')
+  @SuccessResponse('200', 'Phones Updated')
+  public async updatePhones(@Body() requestBody: PhonesRequest): Promise<{ message: string }> {
+    await authManager.updateAllowedPhones(requestBody.phones);
+    return { message: "Whitelist updated successfully" };
   }
 }
