@@ -17,10 +17,6 @@ const validMockConfig = {
   version: '1.0.0',
   host: 'http://homeassistant.local:8123',
   token: 'mock-token',
-  security: {
-    requireAuthKey: 'secret',
-    allowedPhones: ['0501234567'],
-  },
   rootNodeId: 'node-1',
   nodes: {
     'node-1': {

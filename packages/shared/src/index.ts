@@ -83,16 +83,11 @@ export type IVRNode = MenuNode | TargetNode | ServiceSelectNode | InputNode | Ac
 
 export interface IVRSystemConfig {
   version: string;
-  host: string;         // HA Host URL (e.g., http://homeassistant.local:8123)
-  token: string;        // HA Long-Lived Access Token
-  security: {
-    requireAuthKey: string;
-    allowedPhones: string[]; // Empty array means allow all
-  };
-  nodes: Record<string, IVRNode>; // Flat dictionary of nodes
-  rootNodeId: string;   // Where the call starts
+  host: string;         
+  token: string;        
+  nodes: Record<string, IVRNode>; 
+  rootNodeId: string;   
 }
-
 
 
 // ==========================================
@@ -106,4 +101,9 @@ export interface RichEntity {
   domain: string;
   area_id: string | null;
   area_name: string | null;
+}
+
+export interface SecuritySettings {
+  ivrAuthKey: string;
+  allowedPhones: string[];
 }
