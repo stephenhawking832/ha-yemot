@@ -10,6 +10,7 @@ const BaseNodeSchema = z.object({
 const GatheringNodeSchema = BaseNodeSchema.extend({
   ttsPrompt: z.string(),
   valName: z.string(),
+  variableName: z.string(),
 });
 
 // Specific Nodes
