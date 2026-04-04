@@ -3,6 +3,7 @@ import fs from 'fs/promises';
 import path from 'path';
 import bcrypt from 'bcryptjs';
 import * as jsonwebtoken from 'jsonwebtoken';
+import crypto from 'crypto';
 import { z } from 'zod';
 import { logger } from '../utils/logger';
 if (process.env.NODE_ENV !== 'production') {
@@ -14,6 +15,8 @@ const AuthFileSchema = z.object({
   username: z.string(),
   passwordHash: z.string(),
   jwtSecret: z.string(),
+  hashedApiKey: z.string(),
+  allowedPhones: z.array(z.string()),
 });
 
 type AuthFile = z.infer<typeof AuthFileSchema>;
@@ -78,6 +81,8 @@ export class AuthService {
         username: envUsername,
         passwordHash,
         jwtSecret: envJwtSecret,
+        hashedApiKey: "",
+        allowedPhones: [],
       };
 
       // Save to disk
@@ -128,6 +133,49 @@ export class AuthService {
     if (!this.authData) throw new Error('AuthManager not initialized');
     
     return jsonwebtoken.verify(token, this.authData.jwtSecret);
+  }
+
+  /**
+   * Generates a new API Key, hashes it, saves it, and returns the plaintext.
+   * This is called by the GUI when the user clicks "Generate New Key".
+   */
+  public async generateNewApiKey(): Promise<string> {
+    if (!this.authData) throw new Error('AuthManager not initialized');
+
+    const newApiKey = crypto.randomBytes(32).toString('hex');
+    this.authData.hashedApiKey = await bcrypt.hash(newApiKey, 10);
+
+    await fs.writeFile(this.authFilePath, JSON.stringify(this.authData, null, 2), 'utf-8');
+    logger.info('A new Yemot API key was generated via the API.');
+    
+    return newApiKey;
+  }
+
+  /**
+   * Verifies an incoming API key from a Yemot Webhook.
+   */
+  public async verifyApiKey(providedKey: string): Promise<boolean> {
+    if (!this.authData) return false;
+    return bcrypt.compare(providedKey, this.authData.hashedApiKey);
+  }
+
+  /**
+   * Updates the allowed phones whitelist and saves to disk.
+   */
+  public async updateAllowedPhones(phones: string[]): Promise<void> {
+    if (!this.authData) throw new Error('AuthManager not initialized');
+    
+    this.authData.allowedPhones = phones;
+    await fs.writeFile(this.authFilePath, JSON.stringify(this.authData, null, 2), 'utf-8');
+    logger.info('Phone whitelist updated successfully.');
+  }
+
+  /**
+   * Returns the current phone whitelist.
+   */
+  public getAllowedPhones(): string[] {
+    if (!this.authData) return [];
+    return this.authData.allowedPhones;
   }
 }
 
