@@ -17,7 +17,7 @@ async function bootstrap() {
     await haService.connect();
 
     // 4. Start Express (We will add this in Phase 3/4)
-    const PORT = process.env.PORT || 3000;
+    const PORT = 3000;
     app.listen(PORT, () => {
       logger.info(`🚀 Server running on port ${PORT}`);
       logger.info(`👉 API endpoint: http://your-ip:${PORT}/api`);
