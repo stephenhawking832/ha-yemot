@@ -85,10 +85,6 @@ export class ConfigService {
       version: '1.0.0',
       host: 'http://homeassistant.local:8123',
       token: 'YOUR_LONG_LIVED_ACCESS_TOKEN',
-      security: {
-        requireAuthKey: 'CHANGE_ME',
-        allowedPhones: [],
-      },
       nodes: {},
       rootNodeId: '',
     };

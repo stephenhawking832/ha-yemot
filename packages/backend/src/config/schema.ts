@@ -74,10 +74,6 @@ export const IVRSystemConfigSchema = z.object({
   version: z.string(),
   host: z.string().url(),
   token: z.string(),
-  security: z.object({
-    requireAuthKey: z.string(),
-    allowedPhones: z.array(z.string()),
-  }),
   nodes: z.record(z.string(), IVRNodeSchema),
   rootNodeId: z.string(),
 });
