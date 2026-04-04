@@ -3,7 +3,7 @@ import { YemotRouter, Call } from '../../node_modules/yemot-router2';
 import { logger } from '../utils/logger';
 import { authManager } from '../auth/auth.service';
 import { configManager } from '../config/config.service';
-// import { processNode } from './engine'; 
+import { processNode } from './engine'; 
 
 /*
 1. Initialize the Yemot Router
@@ -31,7 +31,7 @@ export const ivrRouter = YemotRouter({
  * 2. The Global Entry Point Middleware
  * Every incoming Yemot webhook hits this '/' route first.
  */
-ivrRouter.get('/', async (call: Call) => {
+ivrRouter.post('/', async (call: Call) => {
   const callId = call.callId;
   const callerPhone = call.values.ApiPhone;
   const providedAuthKey = call.values.auth_key;
@@ -74,11 +74,8 @@ ivrRouter.get('/', async (call: Call) => {
 
     logger.info({ callId }, 'Authentication successful. Starting IVR Engine.');
     
-    // We pass the root node, the call object, and an empty state object
-    // return processNode(rootNodeId, call, {});
-    
-    // FOR NOW (Testing): Just play a success message and hang up
-    return call.id_list_message([{ type: 'text', data: 'ברוכים הבאים למערכת הבית החכם.' }]);
+    // Start the recursive engine!
+    return processNode(rootNodeId, call, {});
 
   } catch (err) {
     logger.error({ err, callId }, 'Error executing call flow');
