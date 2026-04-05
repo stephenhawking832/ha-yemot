@@ -28,8 +28,12 @@ const TargetNodeSchema = GatheringNodeSchema.extend({
 
 const ServiceSelectNodeSchema = GatheringNodeSchema.extend({
   type: z.literal('service_select'),
-  actionMap: z.record(z.string(), z.string()),
-  nextNodeId: z.string(),
+  choices: z.record(
+    z.string(), // The DTMF digit (key)
+    z.object({
+      service: z.string(),
+      nextNodeId: z.string(),
+    }))
 });
 
 const InputNodeSchema = GatheringNodeSchema.extend({

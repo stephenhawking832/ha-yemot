@@ -37,9 +37,14 @@ export interface TargetNode extends GatheringNode {
 
 export interface ServiceSelectNode extends GatheringNode {
   type: 'service_select';
-  // Maps DTMF digit to HA domain.service (e.g., "1" -> "climate.turn_on")
-  actionMap: Record<string, string>; 
-  nextNodeId: string;
+  
+  variableName: string; // e.g., "selected_action"
+  
+  // Maps the DTMF digit to BOTH the HA service string AND the next Node ID
+  choices: Record<string, {
+    service: string;      // e.g., "climate.turn_on"
+    nextNodeId: string;   // Where to route based on this specific choice
+  }>;
 }
 
 export interface InputNode extends GatheringNode {
