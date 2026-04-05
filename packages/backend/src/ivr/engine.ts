@@ -90,17 +90,26 @@ async function handleTargetNode(node: Extract<IVRNode, { type: 'target' }>, call
 }
 
 async function handleServiceSelectNode(node: Extract<IVRNode, { type: 'service_select' }>, call: Call, state: Record<string, any>) {
+  // 1. Get the raw digit from the user
   const rawInput = await call.read([{ type: 'text', data: node.ttsPrompt }], 'tap', {
     val_name: node.valName,
     max_digits: 1,
   });
 
-  const parsedAction = node.actionMap[rawInput as string];
-  if (parsedAction) {
-    state[node.valName] = parsedAction;
+  // 2. Look up the choice in the dictionary
+  const choice = node.choices[rawInput as string];
+
+  if (!choice) {
+    // If user pressed an invalid key, repeat the node
+    await call.id_list_message([{ type: 'text', data: 'בחירה שגויה.' }], { prependToNextAction: true });
+    return processNode(node.id, call, state);
   }
 
-  return processNode(node.nextNodeId, call, state);
+  // 3. Save the parsed HA service string to the state memory
+  state[node.variableName] = choice.service;
+
+  // 4. Branch the call to the specific next node!
+  return processNode(choice.nextNodeId, call, state);
 }
 
 async function handleInputNode(node: Extract<IVRNode, { type: 'input' }>, call: Call, state: Record<string, any>) {
