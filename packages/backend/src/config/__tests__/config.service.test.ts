@@ -25,6 +25,7 @@ const validMockConfig = {
       type: 'menu',
       ttsPrompt: 'Press 1 for AC',
       valName: 'main_menu_choice',
+      variableName: 'test',
       choices: { '1': 'node-2' },
     },
   },
