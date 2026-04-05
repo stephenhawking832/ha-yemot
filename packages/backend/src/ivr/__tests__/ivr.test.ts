@@ -73,6 +73,8 @@ describe('Phase 4: IVR Engine Integration', () => {
       ApiCallId: 'call-1',
       ApiPhone: '0501234567',
       auth_key: 'wrong_key',
+      ApiDID: '0772222770',
+      ApiExtension: '/1',
     });
 
     // yemot-router2 hangs up rejected calls by sending specific Yemot text
@@ -86,6 +88,8 @@ describe('Phase 4: IVR Engine Integration', () => {
       ApiCallId: 'call-123',
       ApiPhone: '0501234567',
       auth_key: 'correct_key',
+      ApiDID: '0772222770',
+      ApiExtension: '/1',
     });
 
     expect(initialResponse.status).toBe(200);
@@ -99,6 +103,8 @@ describe('Phase 4: IVR Engine Integration', () => {
       ApiPhone: '0501234567',
       auth_key: 'correct_key',
       raw_device_input: '1', // The user pressed 1!
+      ApiDID: '0772222770',
+      ApiExtension: '/1',
     });
 
     expect(step2Response.status).toBe(200);
