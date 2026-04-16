@@ -2,12 +2,18 @@
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import { apiFetch } from '../api/client';
-import type { IVRSystemConfig, RichEntity } from '@ha-yemot/shared';
+import type { IVRSystemConfig, RichEntity, SecuritySettings } from '@ha-yemot/shared';
+
+// Define the response type for the API Key generation
+export interface ApiKeyResponse {
+  newApiKey: string;
+  warning: string;
+}
 
 export const useIvrStore = defineStore('ivr', () => {
   // The complete IVR Tree Configuration
   const config = ref<IVRSystemConfig | null>(null);
-  
+  const security = ref<SecuritySettings | null>(null);
   // The cached list of HA entities for GUI dropdowns
   const entities = ref<RichEntity[]>([]);
   
@@ -61,6 +67,40 @@ export const useIvrStore = defineStore('ivr', () => {
     }
   }
 
+  /**
+   * Generates a new Yemot API Key.
+   */
+  async function generateApiKey(): Promise<ApiKeyResponse> {
+    try {
+      return await apiFetch<ApiKeyResponse>('/api/auth/api-key', {
+        method: 'POST',
+      });
+    } catch (error) {
+      console.error('Failed to generate API Key:', error);
+      throw error;
+    }
+  }
+
+  /**
+   * Updates the allowed phones whitelist.
+   */
+  async function updateAllowedPhones(phones: string[]): Promise<void> {
+    try {
+      await apiFetch('/api/auth/phones', {
+        method: 'POST',
+        body: JSON.stringify({ phones }),
+      });
+      
+      // Update local state if successful
+      if (security.value) {
+        security.value.allowedPhones = phones;
+      }
+    } catch (error) {
+      console.error('Failed to update phone whitelist:', error);
+      throw error;
+    }
+  }
+
   return {
     config,
     entities,
@@ -68,6 +108,8 @@ export const useIvrStore = defineStore('ivr', () => {
     isSaving,
     loadConfig,
     saveConfig,
-    loadEntities
+    loadEntities,
+    generateApiKey,
+    updateAllowedPhones
   };
 });
