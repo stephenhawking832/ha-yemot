@@ -13,8 +13,10 @@
   "dependencies": {
     "@ha-yemot/shared": "workspace:*",
     "@primeuix/themes": "^2.0.3",
+    "pinia": "^3.0.4",
     "primevue": "^4.5.4",
-    "vue": "^3.5.30"
+    "vue": "^3.5.30",
+    "vue-i18n": "^11.3.2"
   },
   "devDependencies": {
     "@types/node": "^24.12.0",
