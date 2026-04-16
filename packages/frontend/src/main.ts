@@ -11,6 +11,7 @@ import './style.css';
 
 // Internal Modules
 import { i18n } from './i18n';
+import { router } from './router';
 import App from './App.vue';
 
 const app = createApp(App);
@@ -20,6 +21,8 @@ app.use(createPinia());
 
 // 2. Initialize i18n (Translations)
 app.use(i18n);
+// 2.5 Initialize Router
+app.use(router);
 
 // 3. Initialize PrimeVue v4 with the Aura theme
 app.use(PrimeVue, {
