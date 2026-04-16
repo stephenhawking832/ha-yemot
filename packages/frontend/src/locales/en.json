@@ -1,0 +1,11 @@
+{
+  "app": {
+    "title": "Home Assistant IVR Driver",
+    "settings": "Settings"
+  },
+  "auth": {
+    "login": "Login",
+    "username": "Username",
+    "password": "Password"
+  }
+}
