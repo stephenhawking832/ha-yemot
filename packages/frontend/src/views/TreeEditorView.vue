@@ -15,6 +15,10 @@ import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import Dialog from 'primevue/dialog';
 
+// Nodes Components
+import MenuNodeEditor from '../components/nodes/MenuNodeEditor.vue';
+import TargetNodeEditor from '../components/nodes/TargetNodeEditor.vue';
+
 const ivrStore = useIvrStore();
 const { t } = useI18n();
 
@@ -220,9 +224,12 @@ const saveConfiguration = async () => {
             <InputText v-model="activeNode.name" />
           </div>
 
-          <!-- DYNAMIC FORMS WILL BE INJECTED HERE IN STEP 4 -->
-          <div class="p-4 bg-yellow-50 text-yellow-800 border border-yellow-200 rounded text-sm">
-            Placeholder: Form for {{ activeNode.type }} node.
+          <!-- DYNAMIC FORMS -->
+          <MenuNodeEditor v-if="activeNode.type === 'menu'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
+          <TargetNodeEditor v-else-if="activeNode.type === 'target'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
+          
+          <div v-else class="p-4 bg-yellow-50 text-yellow-800 border border-yellow-200 rounded text-sm">
+            Form for {{ activeNode.type }} node is under construction.
           </div>
 
           <!-- Delete Button -->
