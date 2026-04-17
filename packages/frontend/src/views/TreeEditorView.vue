@@ -60,7 +60,15 @@ const chartData = computed(() => {
 
   const buildTree = (nodeId: string): any => {
     const node = ivrStore.config!.nodes[nodeId];
-    if (!node) return { label: 'Missing Node', key: nodeId }; // Dead link protection
+    
+    // Provide a mock `data` object so the HTML template doesn't crash!
+    if (!node) {
+      return { 
+        key: nodeId, 
+        data: { name: 'Broken Link', type: 'error' }, 
+        children: [] 
+      }; 
+    }
 
     const treeNode: any = {
       key: node.id,
@@ -164,9 +172,14 @@ const saveConfiguration = async () => {
         >
           <!-- Custom Template for Nodes in the Chart -->
           <template #default="slotProps">
-            <div class="p-2 border border-slate-300 rounded shadow-sm bg-white cursor-pointer hover:border-blue-500 min-w-[150px]">
-              <div class="font-bold text-slate-800 border-b pb-1 mb-1 truncate">{{ slotProps.node.data.name }}</div>
-              <div class="text-xs text-slate-500 uppercase">{{ slotProps.node.data.type }}</div>
+            <div class="p-2 border rounded shadow-sm cursor-pointer min-w-[150px]"
+                 :class="slotProps.node.data?.type === 'error' ? 'bg-red-50 border-red-300 text-red-800' : 'bg-white border-slate-300 hover:border-blue-500'">
+              <div class="font-bold border-b pb-1 mb-1 truncate" :class="slotProps.node.data?.type === 'error' ? 'text-red-800 border-red-200' : 'text-slate-800 border-slate-200'">
+                {{ slotProps.node.data?.name || 'Unknown' }}
+              </div>
+              <div class="text-xs uppercase" :class="slotProps.node.data?.type === 'error' ? 'text-red-600' : 'text-slate-500'">
+                {{ slotProps.node.data?.type || 'Unknown' }}
+              </div>
             </div>
           </template>
         </OrganizationChart>
