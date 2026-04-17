@@ -7,5 +7,21 @@
     "login": "Login",
     "username": "Username",
     "password": "Password"
+  },
+  "settings:": {
+    "title": "System Settings",
+    "loading": "Loading settings...",
+    "ha_tab_title": "Home Assistant",
+    "security_tab_title": "Security",
+    "url_title": "Host URL",
+    "ha_token_title": "Long-Lived Access Token",
+    "save_button": "Save HA Settings",
+    "api_key_title": "Yemot Webhook API Key",
+    "api_key_text": "This key is required by Yemot to authenticate with this driver.",
+    "api_key_button": "Generate New API Key",
+    "phonos_tilte": "Phone Number Whitelist",
+    "phonos_text": "Only these phone numbers can access the IVR. Leave empty to allow ALL callers. Type a number and press Enter.",
+    "phonos_button": "Save Whitelist"
+
   }
 }
