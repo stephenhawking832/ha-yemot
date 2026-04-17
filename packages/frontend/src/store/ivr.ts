@@ -104,6 +104,7 @@ export const useIvrStore = defineStore('ivr', () => {
   return {
     config,
     entities,
+    security,
     isLoading,
     isSaving,
     loadConfig,
