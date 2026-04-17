@@ -41,5 +41,24 @@
       "action": "Action (Execute HA)",
       "read": "Read (Speak HA State)"
     }
+  },
+  "nodes": {
+    "common": {
+      "tts_prompt": "TTS Prompt",
+      "val_name": "Yemot Value Name",
+      "variable_name": "Internal Variable Name",
+      "next_node": "Next Node",
+      "add_row": "Add Row",
+      "dtmf_key": "DTMF Key"
+    },
+    "menu": {
+      "choices": "Routing Choices",
+      "target_node": "Target Node"
+    },
+    "target": {
+      "max_digits": "Max Digits (For multiple items)",
+      "entity_map": "Entity Mapping",
+      "select_entity": "Select HA Entity"
+    }
   }
 }
