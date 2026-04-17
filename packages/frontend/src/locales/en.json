@@ -22,6 +22,24 @@
     "phonos_title": "Phone Number Whitelist",
     "phonos_text": "Only these phone numbers can access the IVR. Leave empty to allow ALL callers. Type a number and press Enter.",
     "phonos_button": "Save Whitelist"
-
+  },
+  "editor": {
+    "title": "IVR Flow Editor",
+    "save_tree": "Save Flow",
+    "add_node": "Add New Node",
+    "unlinked_nodes": "Unlinked Nodes",
+    "root_node_label": "Select Root Node",
+    "no_node_selected": "Select a node from the tree to edit its properties.",
+    "delete_node": "Delete Node",
+    "delete_confirm": "Are you sure you want to delete this node? This will break any nodes pointing to it.",
+    "select_type": "Select Node Type",
+    "node_types": {
+      "menu": "Menu (Routing)",
+      "target": "Target (Entity Selection)",
+      "service_select": "Service Selection",
+      "input": "Input (Number Pad)",
+      "action": "Action (Execute HA)",
+      "read": "Read (Speak HA State)"
+    }
   }
 }
