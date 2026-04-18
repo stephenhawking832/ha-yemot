@@ -1,0 +1,89 @@
+{
+  "app": {
+    "title": "Home Assistant IVR Driver",
+    "settings": "Settings"
+  },
+  "auth": {
+    "login": "Login",
+    "username": "Username",
+    "password": "Password"
+  },
+  "settings": {
+    "title": "System Settings",
+    "loading": "Loading settings...",
+    "ha_tab_title": "Home Assistant",
+    "security_tab_title": "Security",
+    "url_title": "Host URL",
+    "ha_token_title": "Long-Lived Access Token",
+    "save_button": "Save HA Settings",
+    "api_key_title": "Yemot Webhook API Key",
+    "api_key_text": "This key is required by Yemot to authenticate with this driver.",
+    "api_key_button": "Generate New API Key",
+    "phonos_title": "Phone Number Whitelist",
+    "phonos_text": "Only these phone numbers can access the IVR. Leave empty to allow ALL callers. Type a number and press Enter.",
+    "phonos_button": "Save Whitelist"
+  },
+  "editor": {
+    "title": "IVR Flow Editor",
+    "save_tree": "Save Flow",
+    "add_node": "Add New Node",
+    "unlinked_nodes": "Unlinked Nodes",
+    "root_node_label": "Select Root Node",
+    "no_node_selected": "Select a node from the tree to edit its properties.",
+    "delete_node": "Delete Node",
+    "delete_confirm": "Are you sure you want to delete this node? This will break any nodes pointing to it.",
+    "select_type": "Select Node Type",
+    "node_types": {
+      "menu": "Menu (Routing)",
+      "target": "Target (Entity Selection)",
+      "service_select": "Service Selection",
+      "input": "Input (Number Pad)",
+      "action": "Action (Execute HA)",
+      "read": "Read (Speak HA State)"
+    }
+  },
+  "nodes": {
+    "common": {
+      "tts_prompt": "TTS Prompt",
+      "val_name": "Yemot Value Name",
+      "variable_name": "Internal Variable Name",
+      "next_node": "Next Node",
+      "add_row": "Add Row",
+      "dtmf_key": "DTMF Key"
+    },
+    "menu": {
+      "choices": "Routing Choices",
+      "target_node": "Target Node"
+    },
+    "target": {
+      "max_digits": "Max Digits (For multiple items)",
+      "entity_map": "Entity Mapping",
+      "select_entity": "Select HA Entity"
+    },
+    "service_select": {
+      "action_map": "Action Mapping (Routing)",
+      "select_action": "Select or type HA Action",
+      "ha_action_string": "HA Action (domain.service)"
+    },
+    "input": {
+      "min_digits": "Minimum Digits Required",
+      "max_digits": "Maximum Digits Allowed"
+    },
+    "action": {
+      "target_variable": "Target Variable (Entity Array)",
+      "action_type": "Action Definition",
+      "dynamic_action": "Dynamic (From Service Select Node)",
+      "hardcoded_action": "Hardcoded Action",
+      "payload_template": "JSON Payload Template",
+      "success_tts": "Success TTS Message",
+      "fail_tts": "Failure TTS Message"
+    },
+    "read": {
+      "target_type": "Entity Selection",
+      "dynamic_target": "Dynamic (From Target Node)",
+      "hardcoded_target": "Hardcoded Entity ID",
+      "attribute": "Attribute (Optional)",
+      "tts_template": "TTS Template (Use {{value}})"
+    }
+  }
+}
