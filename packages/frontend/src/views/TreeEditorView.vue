@@ -64,43 +64,59 @@ const addNewNode = () => {
 const chartData = computed(() => {
   if (!ivrStore.config || !ivrStore.config.rootNodeId) return null;
 
-  const buildTree = (nodeId: string): any => {
-    const node = ivrStore.config!.nodes[nodeId];
+  // We use a Set to track which nodes we have already rendered in this specific branch.
+  // This prevents infinite recursion if a Menu loops back to itself!
+  const buildTree = (nodeId: string, visited: Set<string>): any => {
     
-    // Provide a mock `data` object so the HTML template doesn't crash!
+    // 1. Dead link protection
+    const node = ivrStore.config!.nodes[nodeId];
     if (!node) {
       return { 
-        key: nodeId, 
+        key: `${nodeId}-broken`, // Give it a unique key
         data: { name: 'Broken Link', type: 'error' }, 
         children: [] 
       }; 
     }
 
+    // 2. Infinite Loop Protection (Circular Reference Check)
+    if (visited.has(nodeId)) {
+      return {
+        key: `${nodeId}-circular`, // Give it a unique key
+        data: { name: `🔁 Loop to: ${node.name}`, type: 'loop' },
+        children: [] // We STOP traversing here to prevent the crash!
+      };
+    }
+
+    // Mark this node as visited for the current branch
+    const newVisited = new Set(visited);
+    newVisited.add(nodeId);
+
     const treeNode: any = {
       key: node.id,
-      data: node, // Attach full node data for custom templating
+      data: node,
       children: []
     };
 
-    // Follow the specific branching logic for each node type
+    // 3. Traverse Children
     if (node.type === 'menu') {
       for (const nextId of Object.values(node.choices)) {
-        treeNode.children.push(buildTree(nextId));
+        treeNode.children.push(buildTree(nextId, newVisited));
       }
     } else if (node.type === 'service_select') {
       for (const choiceObj of Object.values(node.choices)) {
-        treeNode.children.push(buildTree(choiceObj.nextNodeId));
+        treeNode.children.push(buildTree(choiceObj.nextNodeId, newVisited));
       }
     } else if ('nextNodeId' in node && node.nextNodeId) {
-      // Target, Input, Action, Read nodes all have a single nextNodeId
-      treeNode.children.push(buildTree(node.nextNodeId));
+      treeNode.children.push(buildTree(node.nextNodeId, newVisited));
     }
 
     return treeNode;
   };
 
-  return buildTree(ivrStore.config.rootNodeId);
+  // Start the recursive build with an empty visited Set
+  return buildTree(ivrStore.config.rootNodeId, new Set<string>());
 });
+
 
 // Calculate nodes that exist in the dictionary but aren't linked in the tree yet
 const unlinkedNodes = computed(() => {
@@ -210,13 +226,30 @@ const deleteActiveNode = () => {
           <!-- Custom Template for Nodes in the Chart -->
           <template #default="slotProps">
             <div class="p-2 border rounded shadow-sm cursor-pointer min-w-[150px]"
-                 :class="slotProps.node.data?.type === 'error' ? 'bg-red-50 border-red-300 text-red-800' : 'bg-white border-slate-300 hover:border-blue-500'">
-              <div class="font-bold border-b pb-1 mb-1 truncate" :class="slotProps.node.data?.type === 'error' ? 'text-red-800 border-red-200' : 'text-slate-800 border-slate-200'">
+                 :class="[
+                   slotProps.node.data?.type === 'error' ? 'bg-red-50 border-red-300 text-red-800' : 
+                   slotProps.node.data?.type === 'loop' ? 'bg-purple-50 border-purple-300 text-purple-800 border-dashed' : 
+                   'bg-white border-slate-300 hover:border-blue-500'
+                 ]">
+              
+              <div class="font-bold border-b pb-1 mb-1 truncate" 
+                   :class="[
+                     slotProps.node.data?.type === 'error' ? 'text-red-800 border-red-200' : 
+                     slotProps.node.data?.type === 'loop' ? 'text-purple-800 border-purple-200' : 
+                     'text-slate-800 border-slate-200'
+                   ]">
                 {{ slotProps.node.data?.name || 'Unknown' }}
               </div>
-              <div class="text-xs uppercase" :class="slotProps.node.data?.type === 'error' ? 'text-red-600' : 'text-slate-500'">
+              
+              <div class="text-xs uppercase" 
+                   :class="[
+                     slotProps.node.data?.type === 'error' ? 'text-red-600' : 
+                     slotProps.node.data?.type === 'loop' ? 'text-purple-600' : 
+                     'text-slate-500'
+                   ]">
                 {{ slotProps.node.data?.type || 'Unknown' }}
               </div>
+              
             </div>
           </template>
         </OrganizationChart>
