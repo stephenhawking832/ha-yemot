@@ -59,6 +59,15 @@
       "max_digits": "Max Digits (For multiple items)",
       "entity_map": "Entity Mapping",
       "select_entity": "Select HA Entity"
+    },
+    "service_select": {
+      "action_map": "Action Mapping (Routing)",
+      "select_action": "Select or type HA Action",
+      "ha_action_string": "HA Action (domain.service)"
+    },
+    "input": {
+      "min_digits": "Minimum Digits Required",
+      "max_digits": "Maximum Digits Allowed"
     }
   }
 }
