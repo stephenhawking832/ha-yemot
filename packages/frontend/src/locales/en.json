@@ -68,6 +68,22 @@
     "input": {
       "min_digits": "Minimum Digits Required",
       "max_digits": "Maximum Digits Allowed"
+    },
+    "action": {
+      "target_variable": "Target Variable (Entity Array)",
+      "action_type": "Action Definition",
+      "dynamic_action": "Dynamic (From Service Select Node)",
+      "hardcoded_action": "Hardcoded Action",
+      "payload_template": "JSON Payload Template",
+      "success_tts": "Success TTS Message",
+      "fail_tts": "Failure TTS Message"
+    },
+    "read": {
+      "target_type": "Entity Selection",
+      "dynamic_target": "Dynamic (From Target Node)",
+      "hardcoded_target": "Hardcoded Entity ID",
+      "attribute": "Attribute (Optional)",
+      "tts_template": "TTS Template (Use {{value}})"
     }
   }
 }
