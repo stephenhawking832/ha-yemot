@@ -18,6 +18,8 @@ import InputText from 'primevue/inputtext';
 // Nodes Components
 import MenuNodeEditor from '../components/nodes/MenuNodeEditor.vue';
 import TargetNodeEditor from '../components/nodes/TargetNodeEditor.vue';
+import ServiceSelectNodeEditor from '../components/nodes/ServiceSelectNodeEditor.vue';
+import InputNodeEditor from '../components/nodes/InputNodeEditor.vue';
 
 const ivrStore = useIvrStore();
 const { t } = useI18n();
@@ -259,7 +261,8 @@ const deleteActiveNode = () => {
           <!-- DYNAMIC FORMS -->
           <MenuNodeEditor v-if="activeNode.type === 'menu'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
           <TargetNodeEditor v-else-if="activeNode.type === 'target'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
-          
+          <ServiceSelectNodeEditor v-else-if="activeNode.type === 'service_select'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
+          <InputNodeEditor v-else-if="activeNode.type === 'input'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
           <div v-else class="p-4 bg-yellow-50 text-yellow-800 border border-yellow-200 rounded text-sm">
             Form for {{ activeNode.type }} node is under construction.
           </div>
