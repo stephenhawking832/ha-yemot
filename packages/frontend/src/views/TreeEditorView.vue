@@ -14,7 +14,7 @@ import Select from 'primevue/select'; // Formally Dropdown in v4
 import Splitter from 'primevue/splitter';
 import SplitterPanel from 'primevue/splitterpanel';
 import Dialog from 'primevue/dialog';
-
+import InputText from 'primevue/inputtext';
 // Nodes Components
 import MenuNodeEditor from '../components/nodes/MenuNodeEditor.vue';
 import TargetNodeEditor from '../components/nodes/TargetNodeEditor.vue';
@@ -125,6 +125,37 @@ const saveConfiguration = async () => {
     alert(`Save failed: ${e.message}`);
   }
 };
+
+const deleteActiveNode = () => {
+  if (!ivrStore.config || !activeNode.value) return;
+  const idToDelete = activeNode.value.id;
+
+  if (!confirm(t('editor.delete_confirm'))) return;
+
+  // 1. Remove the node from the dictionary
+  delete ivrStore.config.nodes[idToDelete];
+
+  // 2. Clean up any broken links in other nodes
+  for (const node of Object.values(ivrStore.config.nodes)) {
+    if (node.type === 'menu') {
+      for (const [dtmf, nextId] of Object.entries(node.choices)) {
+        if (nextId === idToDelete) delete node.choices[dtmf];
+      }
+    } else if (node.type === 'service_select') {
+      for (const [dtmf, choice] of Object.entries(node.choices)) {
+        if (choice.nextNodeId === idToDelete) delete node.choices[dtmf];
+      }
+    } else if ('nextNodeId' in node && node.nextNodeId === idToDelete) {
+      node.nextNodeId = ''; // Clear the link
+    }
+  }
+
+  // 3. Clear selection and root if needed
+  selectedNodeIds.value = {};
+  if (ivrStore.config.rootNodeId === idToDelete) {
+    ivrStore.config.rootNodeId = '';
+  }
+};
 </script>
 
 <template>
@@ -221,6 +252,7 @@ const saveConfiguration = async () => {
           <!-- Shared Properties for ALL nodes -->
           <div class="flex flex-col gap-1">
             <label class="text-xs font-bold text-slate-500 uppercase">Node Name</label>
+            <!-- Bind directly to the dictionary to allow writing -->
             <InputText v-model="activeNode.name" />
           </div>
 
@@ -234,7 +266,14 @@ const saveConfiguration = async () => {
 
           <!-- Delete Button -->
           <div class="mt-8 border-t pt-4">
-            <Button :label="t('editor.delete_node')" icon="pi pi-trash" severity="danger" outlined class="w-full" />
+            <Button 
+              :label="t('editor.delete_node')" 
+              icon="pi pi-trash" 
+              severity="danger" 
+              outlined 
+              class="w-full" 
+              @click="deleteActiveNode" 
+            />
           </div>
         </div>
         
