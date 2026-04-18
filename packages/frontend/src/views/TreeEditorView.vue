@@ -20,6 +20,8 @@ import MenuNodeEditor from '../components/nodes/MenuNodeEditor.vue';
 import TargetNodeEditor from '../components/nodes/TargetNodeEditor.vue';
 import ServiceSelectNodeEditor from '../components/nodes/ServiceSelectNodeEditor.vue';
 import InputNodeEditor from '../components/nodes/InputNodeEditor.vue';
+import ActionNodeEditor from '../components/nodes/ActionNodeEditor.vue';
+import ReadNodeEditor from '../components/nodes/ReadNodeEditor.vue';
 
 const ivrStore = useIvrStore();
 const { t } = useI18n();
@@ -296,9 +298,9 @@ const deleteActiveNode = () => {
           <TargetNodeEditor v-else-if="activeNode.type === 'target'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
           <ServiceSelectNodeEditor v-else-if="activeNode.type === 'service_select'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
           <InputNodeEditor v-else-if="activeNode.type === 'input'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
-          <div v-else class="p-4 bg-yellow-50 text-yellow-800 border border-yellow-200 rounded text-sm">
-            Form for {{ activeNode.type }} node is under construction.
-          </div>
+          <ActionNodeEditor v-else-if="activeNode.type === 'action'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
+          <ReadNodeEditor v-else-if="activeNode.type === 'read'" v-model="(ivrStore.config!.nodes[activeNode.id] as any)" />
+          
 
           <!-- Delete Button -->
           <div class="mt-8 border-t pt-4">
