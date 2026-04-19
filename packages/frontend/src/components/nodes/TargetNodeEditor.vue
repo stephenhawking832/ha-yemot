@@ -72,7 +72,7 @@ const removeEntityMapping = (key: string) => {
     <div class="flex flex-col gap-2">
       <label class="text-xs font-bold text-slate-500 uppercase">{{ t('nodes.target.entity_map') }}</label>
       
-      <div v-for="(entityId, dtmf) in model.entityMap" :key="dtmf" class="flex items-center gap-2 mb-2">
+      <div v-for="(_, dtmf) in model.entityMap" :key="dtmf" class="flex items-center gap-2 mb-2">
         <div class="w-16">
           <InputText :model-value="String(dtmf)" disabled class="w-full text-center font-bold" />
         </div>

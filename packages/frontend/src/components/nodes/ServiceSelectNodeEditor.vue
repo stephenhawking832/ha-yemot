@@ -70,7 +70,7 @@ const removeActionMapping = (key: string) => {
     <div class="flex flex-col gap-2">
       <label class="text-xs font-bold text-slate-500 uppercase">{{ t('nodes.service_select.action_map') }}</label>
       
-      <div v-for="(choiceData, dtmf) in model.choices" :key="dtmf" class="flex flex-col gap-2 mb-4 p-3 bg-slate-50 border border-slate-200 rounded">
+      <div v-for="(_, dtmf) in model.choices" :key="dtmf" class="flex flex-col gap-2 mb-4 p-3 bg-slate-50 border border-slate-200 rounded">
         
         <div class="flex items-center gap-2">
           <div class="w-16">

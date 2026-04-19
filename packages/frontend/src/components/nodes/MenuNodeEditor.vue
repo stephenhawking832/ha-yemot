@@ -55,7 +55,7 @@ const removeChoice = (key: string) => {
     <div class="flex flex-col gap-2">
       <label class="text-xs font-bold text-slate-500 uppercase">{{ t('nodes.menu.choices') }}</label>
       
-      <div v-for="(nextNodeId, dtmf) in model.choices" :key="dtmf" class="flex items-center gap-2 mb-2">
+      <div v-for="(_, dtmf) in model.choices" :key="dtmf" class="flex items-center gap-2 mb-2">
         <!-- The Key -->
         <div class="w-16">
           <InputText :model-value="String(dtmf)" disabled class="w-full text-center font-bold" />
