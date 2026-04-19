@@ -9,3 +9,7 @@
       font-family: var(--font-family, Inter, sans-serif);
   }
 }
+
+html[dir="rtl"] .rtl-flip {
+  transform: rotate(180deg);
+}

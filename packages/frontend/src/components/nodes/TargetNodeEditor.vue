@@ -76,7 +76,7 @@ const removeEntityMapping = (key: string) => {
         <div class="w-16">
           <InputText :model-value="String(dtmf)" disabled class="w-full text-center font-bold" />
         </div>
-        <i class="pi pi-arrow-right text-slate-400 text-sm"></i>
+        <i class="pi pi-arrow-right text-slate-400 text-sm rtl-flip"></i>
         <!-- Rich Dropdown showing friendly names, but saving entity_id -->
         <Select 
           v-model="model.entityMap[dtmf]" 

@@ -60,7 +60,7 @@ const removeChoice = (key: string) => {
         <div class="w-16">
           <InputText :model-value="String(dtmf)" disabled class="w-full text-center font-bold" />
         </div>
-        <i class="pi pi-arrow-right text-slate-400 text-sm"></i>
+        <i class="pi pi-arrow-right text-slate-400 text-sm rtl-flip rtl-flip"></i>
         <!-- The Target Node -->
         <Select 
           v-model="model.choices[dtmf]" 
