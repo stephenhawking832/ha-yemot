@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    /* Required for monorepo project references */
+    "composite": true,
+    "declaration": true,
+    "declarationMap": true,
+    
+    /* Output settings */
+    "outDir": "./dist",
+    "rootDir": "./src",
+    
+    /* Ensure NodeNext compatibility if base uses it */
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext"
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}

@@ -4,7 +4,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsoa spec-and-routes && tsc",
+    "dev": "tsoa spec-and-routes && tsnd --respawn src/server.ts",
+    "tsoa": "tsoa spec-and-routes",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:coverage": "vitest run --coverage"
   },
   "keywords": [],
   "author": "stephenhawking82",
@@ -12,15 +17,23 @@
   "packageManager": "pnpm@10.33.0",
   "dependencies": {
     "@ha-yemot/shared": "workspace:*",
+    "@tsoa/runtime": "7.0.0-alpha.0",
+    "bcryptjs": "^3.0.3",
     "express": "^5.2.1",
     "home-assistant-js-websocket": "^9.6.0",
+    "jsonwebtoken": "^9.0.3",
     "pino": "^10.3.1",
     "pino-http": "^11.0.0",
     "tsoa": "7.0.0-alpha.0",
+    "ws": "^8.20.0",
     "yemot-router2": "^6.2.0",
     "zod": "^4.3.6"
   },
   "devDependencies": {
-    "@types/express": "^5.0.6"
+    "@types/express": "^5.0.6",
+    "@types/jsonwebtoken": "^9.0.10",
+    "@types/ws": "^8.18.1",
+    "@vitest/coverage-v8": "^4.1.2",
+    "vitest": "^4.1.2"
   }
 }

@@ -1,7 +1,8 @@
 <script setup lang="ts">
-import HelloWorld from './components/HelloWorld.vue'
+// App.vue is just the root mount point now.
 </script>
 
 <template>
-  <HelloWorld />
+  <router-view />
 </template>
+<!-- END REPLACE -->
