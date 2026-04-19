@@ -8,7 +8,7 @@ if [ -n "$TAILSCALE_AUTH_KEY" ]; then
     echo "🔒 Starting Tailscale userspace networking..."
     tailscaled --tun=userspace-networking --socks5-server=localhost:1055 &
     sleep 3
-    tailscale up --authkey=$TAILSCALE_AUTH_KEY --hostname=ivr-driver --accept-dns=false
+    tailscale up --authkey=$TAILSCALE_AUTH_KEY --hostname=ivr-driver --accept-dns=true
 fi
 
 # 2. SSL & NGINX INITIALIZATION
