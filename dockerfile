@@ -24,6 +24,8 @@ RUN pnpm deploy --filter @ha-yemot/backend --prod /prod/backend
 # -----------------------------------
 FROM base AS final
 
+ENV NODE_ENV=production
+
 # Install Infrastructure: Nginx, Supervisor, Certbot, and Tailscale
 RUN apt-get update && apt-get install -y \
     nginx \
