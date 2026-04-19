@@ -18,19 +18,14 @@ const model = defineModel<ActionNode>({ required: true });
 // Find all TargetNodes to get their variable names (for targetVariableName)
 const targetVariables = computed(() => {
   if (!ivrStore.config) return [];
-  return Object.values(ivrStore.config.nodes)
-    .filter(n => n.type === 'target')
-    // @ts-ignore
-    .map(n => n.variableName);
-});
+  const nodes = Object.values(ivrStore.config.nodes).filter(n => n.type === 'target');
+  return nodes});
 
 // Find all ServiceSelectNodes to get their variable names (for actionVariableName)
 const actionVariables = computed(() => {
   if (!ivrStore.config) return [];
-  return Object.values(ivrStore.config.nodes)
-    .filter(n => n.type === 'service_select')
-    // @ts-ignore
-    .map(n => n.variableName);
+  const nodes = Object.values(ivrStore.config.nodes).filter(n => n.type === 'service_select');
+    return nodes;
 });
 
 const availableNodes = computed(() => {
@@ -62,8 +57,9 @@ const updateJson = (newString: string) => {
       <label class="text-xs font-bold text-slate-500 uppercase">{{ t('nodes.action.target_variable') }}</label>
       <Select 
         v-model="model.targetVariableName" 
-        :options="targetVariables" 
-        editable
+        :options="targetVariables"
+        optionLabel="name"
+        optionValue="variableName"
         placeholder="Select or type variable name" 
         class="w-full"
       />
@@ -82,8 +78,9 @@ const updateJson = (newString: string) => {
       <Select 
         v-if="actionType === 'dynamic'"
         v-model="model.actionVariableName" 
-        :options="actionVariables" 
-        editable
+        :options="actionVariables"
+        optionLabel="name"
+        optionValue="variableName"        
         placeholder="Select service variable name" 
         class="w-full mt-1 mb-2"
         @change="model.hardcodedAction = ''"

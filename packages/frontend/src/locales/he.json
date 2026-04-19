@@ -1,0 +1,89 @@
+{
+  "app": {
+    "title": "דרייבר IVR ל-Home Assistant",
+    "settings": "הגדרות"
+  },
+  "auth": {
+    "login": "התחברות",
+    "username": "שם משתמש",
+    "password": "סיסמה"
+  },
+  "settings": {
+    "title": "הגדרות מערכת",
+    "loading": "טוען הגדרות...",
+    "ha_tab_title": "Home Assistant",
+    "security_tab_title": "אבטחה",
+    "url_title": "כתובת שרת",
+    "ha_token_title": "טוקן גישה ארוך טווח",
+    "save_button": "שמור הגדרות HA",
+    "api_key_title": "מפתח API ל-Webhook של ימות",
+    "api_key_text": "מפתח זה נדרש על ידי ימות לצורך אימות מול הדרייבר.",
+    "api_key_button": "צור מפתח API חדש",
+    "phonos_title": "רשימת מספרי טלפון מורשים",
+    "phonos_text": "רק מספרים אלו יכולים לגשת ל-IVR. השאר ריק כדי לאפשר לכל המתקשרים. הקלד מספר ולחץ Enter.",
+    "phonos_button": "שמור רשימת מורשים"
+  },
+  "editor": {
+    "title": "עורך זרימת IVR",
+    "save_tree": "שמור זרימה",
+    "add_node": "הוסף צומת חדש",
+    "unlinked_nodes": "צמתים לא מקושרים",
+    "root_node_label": "בחר צומת ראשי",
+    "no_node_selected": "בחר צומת מהעץ כדי לערוך את המאפיינים שלו.",
+    "delete_node": "מחק צומת",
+    "delete_confirm": "האם אתה בטוח שברצונך למחוק צומת זה? פעולה זו תשבור קישורים מצמתים אחרים אליו.",
+    "select_type": "בחר סוג צומת",
+    "node_types": {
+      "menu": "תפריט (ניווט)",
+      "target": "יעד (בחירת ישות)",
+      "service_select": "בחירת שירות",
+      "input": "קלט (לוח מקשים)",
+      "action": "פעולה (ביצוע HA)",
+      "read": "קריאה (הקראת מצב HA)"
+    }
+  },
+  "nodes": {
+    "common": {
+      "tts_prompt": "הודעת TTS",
+      "val_name": "שם ערך ימות",
+      "variable_name": "שם משתנה פנימי",
+      "next_node": "צומת הבא",
+      "add_row": "הוסף שורה",
+      "dtmf_key": "מקש DTMF"
+    },
+    "menu": {
+      "choices": "אפשרויות ניווט",
+      "target_node": "צומת יעד"
+    },
+    "target": {
+      "max_digits": "מספר ספרות מקסימלי (לפריטים מרובים)",
+      "entity_map": "מיפוי ישויות",
+      "select_entity": "בחר ישות HA"
+    },
+    "service_select": {
+      "action_map": "מיפוי פעולות (ניווט)",
+      "select_action": "בחר או הקלד פעולה של HA",
+      "ha_action_string": "פעולת HA (domain.service)"
+    },
+    "input": {
+      "min_digits": "מספר ספרות מינימלי נדרש",
+      "max_digits": "מספר ספרות מקסימלי מותר"
+    },
+    "action": {
+      "target_variable": "משתנה יעד (מערך ישויות)",
+      "action_type": "הגדרת פעולה",
+      "dynamic_action": "דינמי (מצומת בחירת שירות)",
+      "hardcoded_action": "פעולה קבועה",
+      "payload_template": "תבנית JSON לנתונים",
+      "success_tts": "הודעת הצלחה (TTS)",
+      "fail_tts": "הודעת כישלון (TTS)"
+    },
+    "read": {
+      "target_type": "בחירת ישות",
+      "dynamic_target": "דינמי (מצומת יעד)",
+      "hardcoded_target": "מזהה ישות קבוע",
+      "attribute": "מאפיין (אופציונלי)",
+      "tts_template": "תבנית TTS (השתמש ב-{{value}})"
+    }
+  }
+}
