@@ -76,7 +76,7 @@ const removeActionMapping = (key: string) => {
           <div class="w-16">
             <InputText :model-value="String(dtmf)" disabled class="w-full text-center font-bold" />
           </div>
-          <i class="pi pi-arrow-right text-slate-400 text-sm"></i>
+          <i class="pi pi-arrow-right text-slate-400 text-sm rtl-flip"></i>
           
           <!-- Editable Dropdown (Combo Box) for HA Service -->
           <!-- We use editable=true so they can type "custom_domain.service" if they want -->
