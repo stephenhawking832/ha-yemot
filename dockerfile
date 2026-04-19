@@ -53,4 +53,4 @@ WORKDIR /app/backend
 
 EXPOSE 80 443
 
-ENTRYPOINT["/app/docker/entrypoint.sh"]
+ENTRYPOINT ["/app/docker/entrypoint.sh"]
