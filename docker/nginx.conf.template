@@ -1,0 +1,38 @@
+server {
+    listen 80;
+    server_name DOMAIN_PLACEHOLDER;
+
+    # Allow certbot HTTP challenges
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    # Force HTTPS
+    location / {
+        return 301 https://$host$request_uri;
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name DOMAIN_PLACEHOLDER;
+
+    ssl_certificate /etc/letsencrypt/live/DOMAIN_PLACEHOLDER/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/DOMAIN_PLACEHOLDER/privkey.pem;
+
+    # Serve Vue Frontend
+    location / {
+        root /app/frontend;
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Proxy to Node.js Backend (API)
+    location /api/ {
+        proxy_pass http://127.0.0.1:3000/api/;
+    }
+
+    # Proxy to Node.js Backend (Yemot IVR)
+    location /ivr/ {
+        proxy_pass http://127.0.0.1:3000/ivr/;
+    }
+}
