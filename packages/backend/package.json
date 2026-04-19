@@ -6,6 +6,7 @@
   "scripts": {
     "build": "tsoa spec-and-routes && tsc",
     "dev": "tsoa spec-and-routes && tsnd --respawn src/server.ts",
+    "start": "node dist/server.js",
     "tsoa": "tsoa spec-and-routes",
     "test": "vitest run",
     "test:watch": "vitest",
